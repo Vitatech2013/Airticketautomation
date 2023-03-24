@@ -1,0 +1,94 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <style>
+    
+    #nav1 a {
+      position: absolute;
+      right: -160px;
+      transition: 0.3s;
+      padding: 10px;
+      width: 190px;
+      text-decoration: none;
+      font-size: 15px;
+      color: white;
+      border-radius: 5px 5px 0 5px;
+    }
+
+    
+
+    #nav1 a:hover {
+     
+      right: 0;
+    }
+
+    #home {
+      top: 100px;
+      background-color: #2B5892 ;
+    }
+    #addflight {
+      top: 150px;
+      background-color: #2B5892 ;
+    }
+
+    #viewflightdetails{
+      top: 200px;
+      background-color: #2B5892 ;
+    }
+
+    #viewpayment{
+      top: 250px;
+      background-color: #2B5892 ;
+    }
+    #viewbookings{
+      top: 300px;
+      background-color: #2B5892 ;
+    }
+
+    #cancelreservations {
+      top: 350px;
+      background-color:#2B5892 ;
+    }
+    #changepwd {
+      top: 400px;
+      background-color:#2B5892 ;
+    }
+
+    #logout {
+      top: 450px;
+      background-color:#2B5892 ;
+    }
+
+  </style>
+</head>
+
+<body>
+
+    <div class="row" style="background-color: #2B5892     ; height:14%; text-align: center; margin-top: -20px;">  
+        <h3 style="color:white; font-family:verdena;font-weight: bold; position: relative; top: 50%; transform: translateY(-50%)"><strong>Air Ticket Automation</strong></h3>
+    </div>
+  
+  <div id="nav1" class="nav">
+
+    <a href="http://localhost:3000/ManagersHome" id="home"> <span class="glyphicon glyphicon-home">&nbsp;Home</span></a>
+    <a href="http://localhost:3000/manager/Addflight"  target="iframe" id="addflight"><span class="glyphicon glyphicon-plane">&nbsp; Add Flight</span></a>
+    <a href="http://localhost:3000/manager/Viewflights" target="iframe"  id="viewflightdetails"><span class="glyphicon glyphicon-eye-open">&nbsp;View Flight Details</span></a>
+    <a href="http://localhost:3000/manager/reservations" target="iframe" id="viewpayment"><span class="glyphicon glyphicon-eye-open">&nbsp;View Reservation</span></a>
+    <a href="http://localhost:3000/manager/Viewusers" target="iframe"id="viewbookings"><span class="glyphicon glyphicon-user">&nbsp;ViewUsers</span></a>
+    <a href="http://localhost:3000/manager/cancelreservations" target="iframe"id="cancelreservations"><span class="glyphicon glyphicon-eye-open">&nbsp;Cancel Reservation</span></a>
+    <a href="http://localhost:3000/manager/changePassword" target="iframe"id="changepwd"><span class="glyphicon glyphicon-password">&nbsp;Change Password</span></a>
+    <a href="http://localhost:3000/home"  id="logout"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</span></a>
+
+
+  </div>
+  <iframe src="" name="iframe" id="iframe" style="width: 100%; height: 200%; border: none; margin-left: 5px;"></iframe>
+  
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    
+    #nav1 a {
+      position: absolute;
+      right: -155px;
+      transition: 0.3s;
+      padding: 10px;
+      width: 190px;
+      text-decoration: none;
+      font-size: 15px;
+      color: white;
+      border-radius: 5px 5px 0 5px;
+    }
+
+    
+
+    #nav1 a:hover {
+     
+      right: 0;
+    }
+
+    #home {
+      top: 75px;
+      background-color: #2B5892 ;
+    }
+    #profile{
+      top: 120px;
+      background-color: #2B5892 ;
+    }
+
+    #viewflight {
+      top: 165px;
+      background-color:#2B5892 ;
+    }
+
+    #payment{
+      top: 210px;
+      background-color: #2B5892 ;
+    }
+
+    #searchflight{
+      top: 255px;
+      background-color:#2B5892 ;
+    }
+    #viewreservation{
+      top: 300px;
+      background-color: #2B5892 ;
+    }
+  
+
+    #viewcancel {
+      top: 345px;
+      background-color: #2B5892 ;
+    }
+    
+    #changepwd {
+      top: 390px;
+      background-color: #2B5892 ;
+    }
+    #logout {
+      top: 435px;
+      background-color: #2B5892 ;
+    }
+
+  </style>
+</head>
+
+<body>
+
+    <div class="row" style="background-color: #2B5892    ; height:14%; text-align: center; margin-top: -20px;">  
+        <h3 style="color:white; font-family:verdena;font-weight: bold; position: relative; top: 50%; transform: translateY(-50%)"><strong>Air Ticket Automation</strong></h3>
+    </div>
+  
+  <div id="nav1" class="nav">
+
+    <a href="http://localhost:3000/userHome" id="home"><span class="glyphicon glyphicon-home">&nbsp;Home</span></a>
+    <a href="http://localhost:3000/user/profile" target="iframe" id="profile"><span class="glyphicon glyphicon-pencil">&nbsp;Profile</span></a>
+    <a href="http://localhost:3000/user/Viewflights" target="iframe" id="viewflight"><span class="glyphicon glyphicon-eye-open">&nbsp;View Flight</span></a>
+    <a href="http://localhost:3000/user/Viewbooking" id="payment" target="iframe"><span class="glyphicon glyphicon-eye-open">&nbsp;View Bookings</span></a>
+    <a href="http://localhost:3000/user/Searchflights" target="iframe" id="searchflight"><span class="glyphicon glyphicon-search">&nbsp;Search Flight</span></a>
+    <a href="http://localhost:3000/user/reservations" target="iframe"id="viewreservation"><span class="glyphicon glyphicon-eye-open">&nbsp;View Reservation</span></a>
+    <a href="http://localhost:3000/user/cancelreservations" target="iframe"id="viewcancel"><span class="glyphicon glyphicon-eye-open">&nbsp;Cancel Reservation</span></a>
+   
+    <a href="http://localhost:3000/user/changePassword" target="iframe"id="changepwd"><span class="glyphicon glyphicon-password">&nbsp;Change Password</span></a>
+    <a href="http://localhost:3000/home"  id="logout"><span class="glyphicon glyphicon-log-out">&nbsp;Logout</a>
+
+
+  </div>
+  <center>
+    <iframe src="" name="iframe" id="iframe" style="width: 98%; height:570px; border: none; margin-left: 5px;"></iframe>
+  </center>
+  
+  
+  
+</body>
+
+</html>

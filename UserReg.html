@@ -1,0 +1,119 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+<script>
+       
+
+    function performAjax(httpMethod, url, params) {
+        const myPromise = new Promise((resolve, reject) => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    resolve(JSON.parse(this.responseText));
+
+                }
+                if (this.status == 500) {
+                    reject({ error: true, message: "ServerError" });
+                }
+                if (this.status == 404) {
+                    reject({ error: true, message: "Resource not found" });
+                }
+            };
+            xhttp.open(httpMethod, url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            params ? xhttp.send(params) : xhttp.send();
+        });
+        return myPromise;
+    }
+
+    function registration() {
+        event.preventDefault();
+        const FirstName = document.getElementById("fname").value;
+        const LastName = document.getElementById("lname").value;
+        const UserName = document.getElementById("uname").value;
+        const Password = document.getElementById("password").value;
+        const Emailid = document.getElementById("emailid").value;
+        const PhoneNo = document.getElementById("phoneno").value;
+        const Gender = document.getElementById("male").checked ? "Male" : "Female";
+        const Address = document.getElementById("address").value;
+     
+
+
+        const addcomPromise = performAjax(
+            "POST",
+            "http://localhost:4000/User/reg",
+            JSON.stringify({ FirstName,LastName,UserName, Password, Emailid,Gender,PhoneNo, Address })
+           
+        );
+        addcomPromise
+            .then((res) => {
+                alert('Successfully UserRegistered');
+                 document.getElementById("fname").value="";
+                 document.getElementById("lname").value="";
+                 document.getElementById("uname").value="";
+                 document.getElementById("password").value="";
+                 document.getElementById("emailid").value="";
+                 document.getElementById("phoneno").value="";
+                 document.getElementById("address").value="";
+
+            })
+            .catch(err => {
+                alert(err.message);
+                alert('Successfully not UserRegistered');
+
+            })
+
+    }
+</script>
+
+
+
+
+
+<form onsubmit="registration()">
+<div class="row">
+    <div class="col-md-5"></div>
+    <div class="col-md-2"><label style="color:purple"><U>REGISTRATION</U></label></div>
+    <div class="col-md-5"></div>
+</div><br>
+
+
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-2"><label for="">First name:</label>
+        <input type="text" name="fname" class="form-control" id="fname" placeholder="enter firstname" required>
+    </div>
+    <div class="col-sm-2"><label for="">Last name:</label>
+        <input type="text" name="lname" class="form-control" id="lname" placeholder="enter lastname" required></div>
+    <div class="col-sm-2"><label for="">User name:</label>
+        <input type="text" name="uname" class="form-control" id="uname" placeholder="enter username" required></div>
+    <div class="col-sm-2"><label for="">Password:</label>
+        <input type="password" name="password" class="form-control" id="password" placeholder="enter password" required>
+    </div>
+    <div class="col-sm-2"></div>
+</div><br>
+<div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-2"><label for="">Email id:</label>
+        <input type="email" name="email" class="form-control" id="emailid" placeholder="enter email id"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+    </div>
+    <div class="col-sm-2">
+        <label for="">Gender:</label><br><input type="radio" name="gender" id="female"
+        required>Female
+    <input type="radio" name="gender" id="male" required>Male</div>
+    <div class="col-sm-2"> <label for="">phoneno:</label>
+        <input type="text" name="mnum" class="form-control" id="phoneno" placeholder="enter mobile number" max="10"
+            pattern="[6-9]{1}[0-9]{9}" required></div>
+    <div class="col-sm-2"><label for="">Address:</label>
+        <textarea class="form-control" id="address" placeholder="enter address" required></textarea></div>
+    <div class="col-sm-2"></div>
+</div><br><br>
+<div class="row">
+    <div class="col-sm-5"></div>
+    <div class="col-sm-2"><button type="submit" class="btn btn-success">Submit</button></div>&nbsp;
+    <div class="col-sm-5"></div>
+</div><br>
+</form>

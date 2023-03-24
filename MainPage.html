@@ -1,0 +1,83 @@
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    #nav1 a {
+      position: absolute;
+      right: -160px;
+      transition: 0.3s;
+      padding: 10px;
+      width: 190px;
+      text-decoration: none;
+      font-size: 15px;
+      color: white;
+      border-radius: 5px 5px 0 5px;
+    }
+
+    
+
+    #nav1 a:hover {
+     
+      right: 0;
+    }
+
+    #home1 {
+      top: 100px;
+      background-color: #2B5892  ;
+    }
+    #aboutus {
+      top: 155px;
+      background-color: #2B5892  ;
+    }
+
+    #contactus{
+      top: 210px;
+      background-color: #2B5892  ;
+    }
+
+   
+    #admin1 {
+      top: 260px;
+      background-color: #2B5892  ;
+    }
+
+    #user1 {
+      top: 310;
+      background-color: #2B5892  ;
+    }
+
+    #guest {
+      top: 360px;
+      background-color: #2B5892 ;
+    }
+
+  </style>
+</head>
+
+<body>
+
+    <div class="row" style="background-color:#2B5892     ; height:14%; text-align: center; margin-top: -20px;">  
+        <h3 style="color:white; font-family:verdena;font-weight: bold; position: relative; top: 50%; transform: translateY(-50%);"><strong>Air Ticket Automation</strong></h3>
+    </div>
+  
+  <div id="nav1" class="nav">
+
+    <a href="http://localhost:3000/home" id="home1"><span class="glyphicon glyphicon-home">&nbsp;Home</span></a>
+    <a href="#"  id="aboutus"> About Us</a>
+    <a href="#" id="contactus"><span class="glyphicon glyphicon-earphone">&nbsp;Contact Us</a>
+    <a href="http://localhost:3000/Manager" target="iframe" id="admin1"><span class="glyphicon glyphicon-log-in">&nbsp;ManagerLogin</span></a>
+    <a href="http://localhost:3000/UserLogin" target="iframe"id="user1"><span class="glyphicon glyphicon-log-in">&nbsp;UserLogin</span></a>
+    <a href="http://localhost:3000/user/Searchflights" target="iframe"id="guest"><span class="glyphicon glyphicon-search">&nbsp;Search Flight</span></a>
+
+  </div>
+  <iframe src="" name="iframe" id="iframe" style="width: 100%; height: 200%; border: none; margin-left: 5px;"></iframe>
+  
+</body>
+
+</html>

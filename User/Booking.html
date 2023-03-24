@@ -1,0 +1,208 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script>
+
+
+        FlightNumber = sessionStorage.getItem("fno");
+        FlightName = sessionStorage.getItem("fname");
+        ArrivalDate = sessionStorage.getItem("adate");
+        ArrivalTime = sessionStorage.getItem("atime");
+        DepatureDate = sessionStorage.getItem("ddate");
+        DepatureTime = sessionStorage.getItem("dtime");
+        NoOfSeats = sessionStorage.getItem("seats");
+        PerSeatAmount = sessionStorage.getItem("amount");
+        Source = sessionStorage.getItem("source");
+        Destination = sessionStorage.getItem("destination");
+         UserName = sessionStorage.getItem('username');
+
+
+        function performAjax(httpMethod, url, params) {
+                const myPromise = new Promise((resolve, reject) => {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            resolve(this.responseText);
+        
+                        }
+                        if (this.status == 500) {
+                            reject({ error: true, message: "ServerError" });
+                        }
+                        if (this.status == 404) {
+                            reject({ error: true, message: "Resource not found" });
+                        }
+                    };
+                    xhttp.open(httpMethod, url, true);
+                    xhttp.setRequestHeader("Content-Type", "application/json");
+                    params ? xhttp.send(params) : xhttp.send();
+                });
+                return myPromise;
+            }
+        
+      function  getflightdetails(){
+        document.getElementById("bookid").value = Math.floor((Math.random() * 1000) + 1);
+          document.getElementById("fno").value = FlightNumber;
+          document.getElementById("fname").value = FlightName;
+          document.getElementById("adate").value = ArrivalDate;
+          document.getElementById("atime").value = ArrivalTime;
+          document.getElementById("ddate").value = DepatureDate;
+          document.getElementById("dtime").value = DepatureTime;
+          document.getElementById("seats").value = NoOfSeats;
+          document.getElementById("amount").value = PerSeatAmount;
+          document.getElementById("source").value = Source;
+          document.getElementById("destination").value = Destination;
+          document.getElementById("uname").value = UserName;
+        }
+
+
+              function Booking() {
+                event.preventDefault();
+                const FlightNumber = document.getElementById("fno").value;
+                const FlightName = document.getElementById("fname").value;
+                const ArrivalDate = document.getElementById("adate").value;
+                const ArrivalTime = document.getElementById("atime").value;
+                const DepatureDate = document.getElementById("ddate").value;
+                const DepatureTime = document.getElementById("dtime").value;
+                const NoOfSeats = document.getElementById("seats").value;
+                const PerSeatAmount = document.getElementById("amount").value;
+                const Source = document.getElementById("source").value;
+                const Destination = document.getElementById("destination").value;
+                const BookId = document.getElementById("bookid").value;
+                const UserName = document.getElementById("uname").value;
+                const BookingDate = document.getElementById("bdate").value;
+                const Seats = document.getElementById("bseats").value;
+                const Amount = document.getElementById("tamount").value;
+                
+        
+                const addcomPromise = performAjax(
+                    "POST",
+                    "http://localhost:4000/User/booking",
+                    JSON.stringify({ FlightNumber,FlightName,ArrivalDate, ArrivalTime, DepatureDate,DepatureTime,NoOfSeats, PerSeatAmount,Source,Destination,BookId,UserName,BookingDate,Seats,Amount,Status:'Booking' })
+        
+                );
+                addcomPromise
+                    .then((res) => {
+                        alert('Successfully Flight Added');
+                    })
+                    .catch(err => {
+                        alert(err.message);
+                        alert('Successfully Flight not Added');
+        
+                    })
+        
+            }
+            function multiamount(){
+                const Seats = document.getElementById("bseats").value;
+                const PerSeatAmount = document.getElementById("amount").value;
+                const totalamount=Seats*PerSeatAmount;
+                const Amount = document.getElementById("tamount").value=totalamount;
+
+
+            }
+</script>
+
+
+
+
+
+<body onload="getflightdetails()">
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class="col-md-2"><label style="color:purple"><U>BOOK YOUR FLIGHT</U></label></div>
+        <div class="col-md-5"></div>
+    </div><br>
+
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Flight company:</label>
+            <input type="text" name="fcompany" disabled="false" class="form-control" id="fname" placeholder="enter flight company"
+                required>
+        </div>
+        <div class="col-sm-2"><label for="">Arrival date:</label>
+            <input type="date" name="adate" class="form-control" disabled="false" id="adate" placeholder="enter arrival date" required>
+        </div>
+        <div class="col-sm-2"><label for="">Arrival time:</label>
+            <input type="time" name="atime" class="form-control" disabled="false" id="atime" placeholder="enter arrival time" required>
+        </div>
+
+        <div class="col-sm-3"></div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Departure date:</label>
+            <input type="date" name="ddate" class="form-control" disabled="false" id="ddate" placeholder="enter departuredate" required>
+        </div>
+        <div class="col-sm-2"><label for="">Departure time:</label>
+            <input type="time" name="dtime" class="form-control" disabled="false" id="dtime" placeholder="enter departure time" required>
+        </div>
+        <div class="col-sm-2"><label for=""> No.of seats:</label>
+            <input type="nimber" class="form-control" id="seats" disabled="false" name="uname" required></div>
+
+        <div class="col-sm-3"></div>
+
+    </div><br><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Source:</label>
+            <input type="text" class="form-control" disabled="false" id="source" name="Source" placeholder="enter Source name" required>
+        </div>
+        <div class="col-sm-2"><label for="">Destination:</label>
+            <input type="text" disabled="false" class="form-control" id="destination" name="Destination"
+                placeholder="enter Destination name" required></div>
+        <div class="col-sm-2"><label for="">Amount perseat:</label>
+            <input type="number"  disabled="false" class="form-control" id="amount" placeholder="enter amount" required>
+        </div>
+        <div class="col-sm-3"></div>
+    </div><br><br><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Flight number:</label></div>
+        <div class="col-sm-3"><input type="number" class="form-control" disabled="false" id="fno" placeholder="enter flight number"
+                required>
+        </div>
+        <div class="col-sm-4"></div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Bookoing id:</label></div>
+        <div class="col-sm-3"><input type="number" class="form-control" disabled="false" id="bookid" placeholder="enter Bookoing id"
+                required>
+        </div>
+        <div class="col-sm-4"></div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">User name:</label></div>
+        <div class="col-sm-3"><input type="text" class="form-control" disabled="false" id="uname" name="uname"
+                placeholder="enter user name" required></div>
+        <div class="col-sm-4"></div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Bookoing date:</label></div>
+        <div class="col-sm-3"><input type="date" class="form-control" id="bdate" name="day"
+                placeholder="enter booking date"> </div>
+        <div class="col-sm-4"></div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Seats:</label></div>
+        <div class="col-sm-3"><input type="text" class="form-control" onchange="multiamount()" id="bseats" name="uname" required></div>
+        <div class="col-sm-4"></div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-2"><label for="">Amount:</label></div>
+        <div class="col-sm-3"><input type="number" disabled="false" class="form-control" id="tamount" placeholder="enter amount" required>
+        </div>
+        <div class="col-sm-4"></div>
+    </div><br>
+    <div class="row">
+        <div class="col-sm-5"></div>
+        <div class="col-sm-2"><button type="submit" onclick="Booking()" class="btn btn-success">Submit</button></div>&nbsp;
+        <div class="col-sm-5"></div>
+    </div><br>
+</body>

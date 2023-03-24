@@ -1,0 +1,124 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+<style>
+        .form-control {
+            border-radius: 15px;
+        }
+    
+        .tablecss {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+    
+        .tablecss td,
+        .tablecss th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+    
+        .tablecss tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+    
+        .tablecss tr:hover {
+            background-color: #ddd;
+        }
+    
+        .tablecss th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: lavender;
+            color: black;
+            font-weight: bold;
+        }
+    </style>
+    
+    <script>
+       
+        function performAjax(httpMethod, url, params) {
+            const myPromise = new Promise((resolve, reject) => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        resolve(JSON.parse(this.responseText));
+    
+                    }
+                    if (this.status == 500) {
+                        reject({ error: true, message: "ServerError" });
+                    }
+                    if (this.status == 404) {
+                        reject({ error: true, message: "Resource not found" });
+                    }
+                };
+                xhttp.open(httpMethod, url, true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                params ? xhttp.send(params) : xhttp.send();
+            });
+            return myPromise;
+        }
+        function LoadData() {
+            event.preventDefault();
+            const getdata1 = performAjax("GET", "http://localhost:4000/User/showflight");
+            getdata1
+                .then((details) => {
+    
+                    ViewFlightsDetails(details);
+    
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+    function Show(id, FlightNumber,FlightName,ArrivalDate,ArrivalTime,DepatureDate,DepatureTime,NoOfSeats,PerSeatAmount,Source,Destination) {
+        event.preventDefault();
+
+        sessionStorage.setItem("fno", FlightNumber);
+        sessionStorage.setItem("fname", FlightName);
+        sessionStorage.setItem("adate", ArrivalDate);
+        sessionStorage.setItem("atime", ArrivalTime);
+        sessionStorage.setItem("ddate", DepatureDate);
+        sessionStorage.setItem("dtime", DepatureTime);
+        sessionStorage.setItem("seats", NoOfSeats);
+        sessionStorage.setItem("amount",PerSeatAmount);
+        sessionStorage.setItem("source",Source);
+        sessionStorage.setItem("destination",Destination);
+        window.location.href = "Booking";
+       
+    }
+ 
+    function ViewFlightsDetails(records) {
+        let tableHeader = `<tr><th>SNo</th><th>FlightNumber</th><th>FlightName</th><th>ArrivalDate</th><th>ArrivalTime</th><th>DepatureDate</th><th>DepatureTime</th><th>Seats</th><th>Amount</th><th>Source</th><th>Destination</th><th>Action</th></tr>`;
+        if (records.length > 0) {
+            let tableRow = records.map((details, index) => {
+                    
+                const editButton = `<a style="color:green" onclick="Show('${details._id}', '${details.FlightNumber}','${details.FlightName}','${details.ArrivalDate}','${details.ArrivalTime}','${details.DepatureDate}','${details.DepatureTime}','${details.NoOfSeats}','${details.PerSeatAmount}','${details.Source}','${details.Destination}')">Booking</a>`;
+               
+                return `<tr><td>${index + 1}</td><td>${details.FlightNumber}</td><td>${details.FlightName}</td><td>${details.ArrivalDate}</td><td>${details.ArrivalTime}</td><td>${details.DepatureDate}</td><td>${details.DepatureTime}</td><td>${details.NoOfSeats}</td><td>${details.PerSeatAmount}</td><td>${details.Source}</td><td>${details.Destination}</td><td> ${editButton}</td></tr>`;
+
+            });
+            document.getElementById("viewtable").innerHTML = `<table  class="scripted table" border="2">${tableHeader}${tableRow.join('')}</table>`;
+        }
+
+        else {
+            tableRow = `<tr><td colspan="14" align="center">No Data Found</td></tr>`;
+            document.getElementById("viewtable").innerHTML = `${tableHeader}${tableRow}`;
+        }
+    }
+
+</script>
+
+<body onload="LoadData()">
+    <br>
+    <br>
+    <br>
+    <center>
+        <table id=viewtable border="1" class="tablecss" style="width: 1000px;"></table>
+    </center>
+    <br>

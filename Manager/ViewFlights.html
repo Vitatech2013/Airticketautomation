@@ -1,0 +1,249 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+<style>
+    .form-control {
+        border-radius: 15px;
+    }
+
+    .tablecss {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .tablecss td,
+    .tablecss th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .tablecss tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+
+    .tablecss tr:hover {
+        background-color: #ddd;
+    }
+
+    .tablecss th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: lavender;
+        color: black;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+   
+    function performAjax(httpMethod, url, params) {
+        const myPromise = new Promise((resolve, reject) => {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    resolve(JSON.parse(this.responseText));
+
+                }
+                if (this.status == 500) {
+                    reject({ error: true, message: "ServerError" });
+                }
+                if (this.status == 404) {
+                    reject({ error: true, message: "Resource not found" });
+                }
+            };
+            xhttp.open(httpMethod, url, true);
+            xhttp.setRequestHeader("Content-Type", "application/json");
+            params ? xhttp.send(params) : xhttp.send();
+        });
+        return myPromise;
+    }
+    function LoadData() {
+        event.preventDefault();
+        const getdata1 = performAjax("GET", "http://localhost:4000/Manager/showflights");
+        getdata1
+            .then((details) => {
+
+                ViewFlightsDetails(details);
+
+            })
+            .catch(err => {
+                alert(err.message);
+            })
+    }
+    function deleteFile(event) {
+        event.preventDefault();
+        var result = confirm("Are you sure you want to delete?");
+        if (result) {
+            const getDeletePromise = performAjax('DELETE', `http://localhost:4000/Manager/flightdel/${event.target.id}`);
+            getDeletePromise
+                .then((FilesList) => {
+                    ViewFlightsDetails(FilesList);
+                })
+                .catch(err => {
+                    alert(err.message);
+                })
+        }
+    }
+    function UpdateFlights() {
+        const id = document.getElementById("id").value;
+        const FlightNumber = document.getElementById("flightno").value;
+        const FlightName = document.getElementById("flightname").value;
+        const ArrivalDate = document.getElementById("adate").value;
+        const ArrivalTime = document.getElementById("atime").value;
+        const DepatureDate = document.getElementById("ddate").value;
+        const DepatureTime = document.getElementById("dtime").value;
+        const NoOfSeats = document.getElementById("seats").value;
+        const PerSeatAmount = document.getElementById("amount").value;
+        const Source = document.getElementById("source").value;
+        const Destination = document.getElementById("destination").value;
+
+        const getUpdatePromise = performAjax(
+            "PUT",
+            `http://localhost:4000/Manager/flightupdate/${id}`,
+            JSON.stringify({  FlightNumber,FlightName,ArrivalDate, ArrivalTime, DepatureDate,DepatureTime,NoOfSeats, PerSeatAmount,Source,Destination  })
+        );
+        getUpdatePromise
+            .then((updatePromise) => {
+                alert('Updated');
+                ViewFlightsDetails(updatePromise);
+            })
+            .catch(err => {
+                alert(err.message);
+            })
+
+    }
+
+
+    function ShowPopUp(id, FlightNumber,FlightName,ArrivalDate,ArrivalTime,DepatureDate,DepatureTime,NoOfSeats,PerSeatAmount,Source,Destination) {
+        event.preventDefault();
+        document.getElementById("id").value = id;
+        FlightNumber = document.getElementById("flightno").value=FlightNumber;
+        FlightName = document.getElementById("flightname").value=FlightName;
+        ArrivalDate = document.getElementById("adate").value=ArrivalDate;
+        ArrivalTime = document.getElementById("atime").value=ArrivalTime;
+        DepatureDate = document.getElementById("ddate").value=DepatureDate;
+        DepatureTime = document.getElementById("dtime").value=DepatureTime;
+        NoOfSeats = document.getElementById("seats").value=NoOfSeats;
+        PerSeatAmount = document.getElementById("amount").value=PerSeatAmount;
+        Source = document.getElementById("source").value=Source;
+        Destination = document.getElementById("destination").value=Destination;
+    }
+ 
+    function ViewFlightsDetails(records) {
+        let tableHeader = `<tr><th>SNo</th><th>FlightNumber</th><th>FlightName</th><th>ArrivalDate</th><th>ArrivalTime</th><th>DepatureDate</th><th>DepatureTime</th><th>Seats</th><th>Amount</th><th>Source</th><th>Destination</th><th>Action</th></tr>`;
+        if (records.length > 0) {
+            let tableRow = records.map((details, index) => {
+                const deleteButton = `<a id="${details._id}" onclick="deleteFile(event)" style="color:red"  class="glyphicon glyphicon-trash"></a>`;
+                        
+                const editButton = `<a  style="color:green" class="glyphicon glyphicon-pencil" data-toggle="modal" data-target="#myModal" onclick="ShowPopUp('${details._id}', '${details.FlightNumber}','${details.FlightName}','${details.ArrivalDate}','${details.ArrivalTime}','${details.DepatureDate}','${details.DepatureTime}','${details.NoOfSeats}','${details.PerSeatAmount}','${details.Source}','${details.Destination}')"></a>`;
+               
+                return `<tr><td>${index + 1}</td><td>${details.FlightNumber}</td><td>${details.FlightName}</td><td>${details.ArrivalDate}</td><td>${details.ArrivalTime}</td><td>${details.DepatureDate}</td><td>${details.DepatureTime}</td><td>${details.NoOfSeats}</td><td>${details.PerSeatAmount}</td><td>${details.Source}</td><td>${details.Destination}</td><td>${deleteButton} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ${editButton}</td></tr>`;
+
+            });
+            document.getElementById("viewtable").innerHTML = `<table  class="scripted table" border="2">${tableHeader}${tableRow.join('')}</table>`;
+        }
+
+        else {
+            tableRow = `<tr><td colspan="14" align="center">No Data Found</td></tr>`;
+            document.getElementById("viewtable").innerHTML = `${tableHeader}${tableRow}`;
+        }
+    }
+
+</script>
+
+<body onload="LoadData()">
+    <br>
+    <br>
+    <br>
+    <center>
+        <table id=viewtable border="1" class="tablecss" style="width: 1000px;"></table>
+    </center>
+    <br>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Update Status</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-3"><label for="">Id</label></div>
+                            <div class="col-md-4"><input type="text" class="form-control" disabled="false" name="id"
+                                    id="id" placeholder="User Name"></div>
+                            <div class="col-md-2"></div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><label for="Flight no.">Flight Number:</label>
+                                <input type="number" name="flight no" class="form-control" id="flightno" placeholder=""
+                                    required>
+                            </div>
+                            <div class="col-sm-2"><label for="Flight Company">Flight Company:</label>
+                                <input type="text" name="flightname" class="form-control" id="flightname"
+                                    placeholder="Flight company" required></div>
+                            <div class="col-sm-2"><label for="Arrival Date">Arrival Date:</label>
+                                <input type="date" name="adate" class="form-control" id="adate" placeholder="" required>
+                            </div>
+                            <div class="col-sm-2"><label for="Arrival Time">Arrival Time:</label>
+                                <input type="text" name="atime" class="form-control" id="atime" placeholder="" required>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div><br>
+                        <div class="row">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-2"><label for="Departure Date">Departure Date:</label>
+                                <input type="date" name="ddate" class="form-control" id="ddate" placeholder="" required>
+                            </div>
+                            <div class="col-sm-2"><label for="Departure Time">Departure Time:</label>
+                                <input type="text" name="dtime" class="form-control" id="dtime" placeholder="" required>
+                            </div>
+                            <div class="col-sm-2"><label for="no. of seats">No. of Seats:</label>
+                                <input type="text" name="seats" class="form-control" id="seats" placeholder="seats"
+                                    required></div>
+                            <div class="col-sm-2"><label for="Amount per Seat">Amount per Seat:</label>
+                                <input type="text" name="amount" class="form-control" id="amount"
+                                    placeholder="cost price per seat" required></div>
+                            <div class="col-sm-2"></div>
+                        </div><br>
+
+                        <div class="row">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-2"><label for="source">Source:</label>
+                                <input type="text" name="source" class="form-control" id="source" placeholder="Source"
+                                    required></div>
+                            <div class="col-sm-2"><label for="destination">Destination:</label>
+                                <input type="text" name="destination" class="form-control" id="destination"
+                                    placeholder="Destination" required></div>
+                            <div class="col-sm-4"></div>
+                        </div><br>
+
+                     
+
+                        <div class="row">
+                            <div class="col-md-6">
+
+                            </div>
+                            <div class="col-md-3"><button type="button" id="submit" class="btn btn-info"
+                                    data-dismiss="modal" onclick="UpdateFlights()">Update</button></div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>

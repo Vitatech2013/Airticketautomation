@@ -1,0 +1,122 @@
+<html>
+  
+        <head>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        
+            <style>
+                .form-control {
+                    border: 2px solid black;
+                }
+            </style>
+
+       <script>
+       id = sessionStorage.getItem("id");
+      BookId = sessionStorage.getItem("bookid");
+      UserName = sessionStorage.getItem('username');
+        function performAjax(httpMethod, url, params) {
+            const myPromise = new Promise((resolve, reject) => {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        resolve(JSON.parse(this.responseText));
+    
+                    }
+                    if (this.status == 500) {
+                        reject({ error: true, message: "ServerError" });
+                    }
+                    if (this.status == 404) {
+                        reject({ error: true, message: "Resource not found" });
+                    }
+                };
+                xhttp.open(httpMethod, url, true);
+                xhttp.setRequestHeader("Content-Type", "application/json");
+                params ? xhttp.send(params) : xhttp.send();
+            });
+            return myPromise;
+        }
+        function getdeatils(){
+           console.log(BookId);
+          document.getElementById("bookid").value = BookId;
+          document.getElementById("uname").value = UserName;
+          document.getElementById("id").value = userid;
+        }
+
+        function Updatestauts() {
+        
+        document.getElementById("id").value=id
+ 
+         const getUpdatePromise = performAjax(
+             "PUT",
+             `http://localhost:4000/User/updatestatus/${id}`,
+             JSON.stringify({ Status: 'Payment' })
+         );
+         getUpdatePromise
+             .then((updatePromise) => {
+                 alert('Details Updated');
+                 
+             })
+             .catch(err => {
+                 alert(err.message);
+             })
+ 
+     }
+ 
+</script>
+    </head>
+    <body onload="getdeatils()" style="font-family:verdena;">
+        <br>
+       <form onsubmit="Updatestauts()"> 
+        <div class="row">
+            <div class="col-sm-4"></div><input type="hidden" name="id"  class="form-control" id="id" >
+            <div class="col-sm-1"><label for="username">Username:</label></div>
+            <div class="col-sm-3"><input type="text" name="uname" disabled="false" class="form-control" id="uname" placeholder="enter user name" required></div>
+            <div class="col-sm-4"></div>
+        </div><br>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-1"><label for="old password">BookId:</label></div>
+            <div class="col-sm-3"><input type="text" name="Bookid"  disabled="false" class="form-control" id="bookid" placeholder="" required></div>
+            <div class="col-sm-4"></div>
+        </div><br>
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-1"><label for="search">CardType:</label></div>
+            <div class="col-sm-3">
+                <select value="" id="cardtype" class="form-control" required>
+                    <option value="CreditCard">CreditCard</option>
+                    <option value="DebitCard">DebitCard</option>
+  
+                </select>
+            </div>
+            <div class="col-sm-4"></div>
+        </div><br>
+        <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-1"><label for="new password">CvvNUmber:</label></div>
+                <div class="col-sm-3"><input type="text" name="password" class="form-control" id="cvvno" placeholder="" required></div>
+                <div class="col-sm-4"></div>
+            </div><br>
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-1"><label for="confirm password">AccountNumber:</label></div>
+                <div class="col-sm-3"><input type="text" name="password" class="form-control" id="ano"  required></div>
+                <div class="col-sm-4"></div>
+            </div><br>
+           
+            <div class="row">
+                <div class="col-sm-5"></div>
+                <div class="col-sm-3">
+                      <button type="submit"  class="btn btn-success">Submit</button>
+                   
+              </div>
+                <div class="col-sm-4"></div>
+            </div><br>
+           </form>
+    </body>
+   
+    </html>
